@@ -13,12 +13,16 @@ async function confirmation(data) {
     const cityRef = db.collection('transactions').doc(data.CheckoutRequestID);
 
     const resp = await cityRef.update(data)
-    const ge = await cityRef.get()
+    const ge =(await cityRef.get()).data()
+
+    let addr = await ge.address
+    console.log(addr)
+    
 
     if (data.ResultCode === 0 ){
         console.log("here",data.CallbackMetadata)
-        const amount =  ethers.utils.parseEther('1')
-        let tx = await  usdContract.mint(ge.address,amount)
+        const amount =  ethers.utils.parseEther(ge.amount)
+        let tx = await  usdContract.mint(addr,amount)
         let receipt = await tx.wait()
         await cityRef.update(receipt.transactionHash)
 

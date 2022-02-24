@@ -4,7 +4,10 @@ moment().tz("Africa/Nairobi").format();
 const {db} = require('./helpers/firbase')
 
 async function stkDeposit (req) {
-    const auth = await getOAuthToken()
+
+    let consumer_key = process.env.consumerKey
+    let consumer_secret =process.env.consumer_secret
+    const auth = await getOAuthToken(consumer_key,consumer_secret)
     let data = await lipaNaMpesaOnline(auth,req)
     return data
 
@@ -12,10 +15,8 @@ async function stkDeposit (req) {
 }
 
 
-async function getOAuthToken(){
+async function getOAuthToken(consumer_key,consumer_secret){
 
-    let consumer_key = process.env.consumerKey
-    let consumer_secret =process.env.consumer_secret
 
     let url =  'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
@@ -63,7 +64,7 @@ async function lipaNaMpesaOnline(token,req){
     let partyB = bs_short_code;
     let phoneNumber = req.phoneNumber; //should follow the format:2547xxxxxxxx
     let callBackUrl =process.env.callback_url ;
-    let accountReference = "lipa-na-mpesa-Reserve";
+    let accountReference = "lipa-na-mpesa";
     let transaction_desc = "Test new tech";
 
     try {
