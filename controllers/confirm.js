@@ -25,7 +25,7 @@ async function confirmation(data) {
         let tx = await  usdContract.mint(addr,amount)
         let receipt = await tx.wait()
         console.log(receipt.transactionHash)
-        await cityRef.set(`${receipt.transactionHash}`)
+        await cityRef.set({TxHash:`${receipt.transactionHash}`})
 
     }
 
