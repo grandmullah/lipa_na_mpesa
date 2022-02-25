@@ -24,8 +24,7 @@ async function confirmation(data) {
         const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
         let tx = await  usdContract.mint(addr,amount)
         let receipt = await tx.wait()
-        await cityRef.update(receipt.transactionHash)
-
+        await cityRef.set(receipt.transactionHash)
 
     }
 
