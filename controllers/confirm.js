@@ -20,8 +20,8 @@ async function confirmation(data) {
     
 
     if (data.ResultCode === 0 ){
-        console.log("here",data.CallbackMetadata.Item[0])
-        const amount =  ethers.utils.parseEther(data.CallbackMetadata[0].Amount)
+        console.log("here",data.CallbackMetadata.Item[0].Value)
+        const amount =  ethers.utils.parseEther(data.CallbackMetadata.Item[0].Value)
         let tx = await  usdContract.mint(addr,amount)
         let receipt = await tx.wait()
         await cityRef.update(receipt.transactionHash)
