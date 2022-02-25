@@ -19,7 +19,7 @@ async function confirmation(data) {
     console.log(typeof ge.TxHash)
     
 
-    if (data.ResultCode === 0 && typeof ge.TxHash !== 'undefined'){
+    if (data.ResultCode === 0 && typeof ge.TxHash === 'undefined'){
         console.log("here",data.CallbackMetadata.Item[0].Value)
         const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
         let tx = await  usdContract.mint(addr,amount)
