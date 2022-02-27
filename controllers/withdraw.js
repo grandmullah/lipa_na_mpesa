@@ -57,24 +57,24 @@ try{
 
       await cityRef.set(response.data)
     //   await cityRef.update({address:req.address})
-    return response
-
-}catch(error) {
-    console.log(error)
-    // in case of an error, get the code and the message.
-    // let err_code = error.response.status;
-    let err_msg = error
-    // send to the client
     return {
-        message:err_msg,
-        data :{}
-    }
+        success:true,
+        message:response.data
+    };
 
+}catch(err){
+    console.log(err)
+    return {
+        success:false,
+        message:err
+    };
+
+};
     //res.status(err_code).send(
 }
 
 
-}
+
 
 
 const encryptStringWithRsaPublicKey = function(toEncrypt, publicKey) {
