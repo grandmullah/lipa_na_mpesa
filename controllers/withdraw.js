@@ -12,18 +12,18 @@ const {db} = require('./helpers/firbase')
 
 async function Withdrawal (req) {
  
-     const consumer_key_b2c = process.env.consumer_key_b2c
-     const consumer_secret_b2c = process.env.consumer_secret_b2c
-     console.log('here',consumer_key_b2c)
-     const auth =  await getOAuthToken(consumer_key_b2c,consumer_secret_b2c)
-     console.log(auth)
-     const data = readFileSync(resolve(process.env.path));
-     const privateKey = String(data);
-     var security =   encryptStringWithRsaPublicKey(process.env.password,privateKey)
-    
-     console.log(security)
-      let re = await withdraw(auth,security,req.amount,req.phoneNumber)
-      return re
+    const consumer_key_b2c = process.env.consumer_key_b2c
+    const consumer_secret_b2c = process.env.consumer_secret_b2c
+    console.log('here',consumer_key_b2c)
+    const auth =  await getOAuthToken(consumer_key_b2c,consumer_secret_b2c)
+    console.log(auth)
+    const data = readFileSync(resolve(process.env.path));
+    const privateKey = String(data);
+    var security =   encryptStringWithRsaPublicKey(process.env.password,privateKey)
+
+    console.log(security)
+    let re = await withdraw(auth,security,req.amount,req.phoneNumber)
+    return re
  
 }
 
@@ -35,7 +35,7 @@ try{
     // console.log('hapa',security)
     auth = "Bearer " + token ;
     // send the request
-    
+
     response = await axios.default.post('https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest',{
     "InitiatorName":  `${process.env.InitiatorName}`,
     "SecurityCredential": `${security}`,
