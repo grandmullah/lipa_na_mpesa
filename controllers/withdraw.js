@@ -40,7 +40,7 @@ try{
     "SecurityCredential": `${security}`,
     "CommandID": "BusinessPayment",
     "Amount": amount,
-    "PartyA": process.env.B2cCode,
+    "PartyA":`${process.env.B2cCode}`,
     "PartyB": phoneNumber,
     "Remarks": "remarks",
     "QueueTimeOutURL": `${process.env.b2c_timeout}`,
