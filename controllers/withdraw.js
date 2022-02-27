@@ -6,22 +6,23 @@ const { resolve } =  require("path")
 const { readFileSync } =  require("fs")
 
 
+const {db} = require('./helpers/firbase')
 
 
 
-async function Withdrawal () {
+async function Withdrawal (req) {
  
      const consumer_key_b2c = process.env.consumer_key_b2c
      const consumer_secret_b2c = process.env.consumer_secret_b2c
      console.log('here',consumer_key_b2c)
      const auth =  await getOAuthToken(consumer_key_b2c,consumer_secret_b2c)
      console.log(auth)
-     const data = readFileSync(resolve('/Users/Biegon/Desktop/pro/payment/ProductionCertificate.cer'));
+     const data = readFileSync(resolve(process.env.path));
      const privateKey = String(data);
-     var security =   encryptStringWithRsaPublicKey('mm+ReAz4#1',privateKey)
+     var security =   encryptStringWithRsaPublicKey(process.env.password,privateKey)
     
      console.log(security)
-      let re = await withdraw(auth,security,'10','254724341383')
+      let re = await withdraw(auth,security,req.amount,req.phoneNumber)
       return re.data
  
 }
@@ -35,15 +36,15 @@ try{
     auth = "Bearer " + token ;
     // send the request
     response = await axios.default.post('https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest',{
-    "InitiatorName": "webapibulk",// `${process.env.InitiatorName}`,
+    "InitiatorName":  `${process.env.InitiatorName}`,
     "SecurityCredential": `${security}`,
     "CommandID": "BusinessPayment",
     "Amount": amount,
-    "PartyA": '3030019', // process.env.B2cCode,
+    "PartyA": process.env.B2cCode,
     "PartyB": phoneNumber,
     "Remarks": "remarks",
-    "QueueTimeOutURL": `https://e2f3-196-98-182-53.ngrok.io/api/timeout`,
-    "ResultURL": `https://e2f3-196-98-182-53.ngrok.io/api/cb`,
+    "QueueTimeOutURL": `${process.env.b2c_timeout}`,
+    "ResultURL": `${process.env.b2c_callback}`,
     "Occasion": "remarks"
     },{
         headers:{
@@ -51,7 +52,11 @@ try{
         }
     })
 
+    console.log(response.data)
+    const cityRef = db.collection('withdrawals').doc(response.data.ConversationID);
 
+      await cityRef.set(response.data)
+    //   await cityRef.update({address:req.address})
     return response
 
 }catch(error) {

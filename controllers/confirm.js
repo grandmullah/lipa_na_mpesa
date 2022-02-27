@@ -33,6 +33,35 @@ async function confirmation(data) {
     return true
 }
 
+async function B2c_confirmation(data) {
+
+    const cityRef = db.collection('transactions').doc(data.CheckoutRequestID);
+
+    const resp = await cityRef.update(data)
+    const ge =(await cityRef.get()).data()
+
+    let addr = await ge.address
+    console.log(typeof ge.TxHash)
+    
+
+    if (data.ResultCode === 0 && typeof ge.TxHash === 'undefined'){
+        await cityRef.set({TxHash:`receipt.transactionHash`})
+        console.log("here",data.CallbackMetadata.Item[0].Value)
+        const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
+        let tx = await  usdContract.mint(addr,amount)
+        let receipt = await tx.wait()
+        console.log(receipt.transactionHash)
+        await cityRef.update({TxHash:`${receipt.transactionHash}`})
+
+    }
+
+    return true
+}
+
+
+
+
+
 module.exports = {
     confirmation
 }
