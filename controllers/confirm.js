@@ -32,12 +32,17 @@ async function confirmation(data) {
 }
 
 async function web3 (addr,amount) {
-    const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
-    const Wallet = new ethers.Wallet(process.env.key,Provider)
-    const usdContract  = await new ethers.Contract('0xC9656CcFf4Bb3A00C1115d6C6A5faDFF20Eb016d',abi,Wallet)
-    let tx = await  usdContract.mint(addr,amount)
-    console.log(tx)
-    return await tx.wait()
+    try {
+        const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
+        const Wallet = new ethers.Wallet(process.env.key,Provider)
+        const usdContract  = await new ethers.Contract('0xC9656CcFf4Bb3A00C1115d6C6A5faDFF20Eb016d',abi,Wallet)
+        let tx = await  usdContract.mint(addr,amount)
+        console.log(tx)
+        return await tx.wait()
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 
 async function B2c_confirmation(data) {
