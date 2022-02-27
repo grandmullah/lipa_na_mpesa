@@ -53,7 +53,7 @@ app.post('/api/withdraw', async (req, res) => {
   console.log(req.body )
   let resp = await Withdrawal(req.body)
   console.log(respo)
-   if(respo.success){
+   if(resp.success){
     return res.status(200).json({
       status:true
     })
