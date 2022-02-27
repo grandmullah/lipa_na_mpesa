@@ -52,8 +52,8 @@ app.post('/api/deposit', async (req, res) => {
 app.post('/api/withdraw', async (req, res) => {
   console.log(req.body )
   let resp = await Withdrawal(req.body)
-  console.log(resp)
-   if(resp.success){
+  console.log(respo)
+   if(respo.success){
     return res.status(200).json({
       status:true
     })
