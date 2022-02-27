@@ -23,7 +23,7 @@ async function Withdrawal (req) {
     
      console.log(security)
       let re = await withdraw(auth,security,req.amount,req.phoneNumber)
-      return re.data
+      return re
  
 }
 
