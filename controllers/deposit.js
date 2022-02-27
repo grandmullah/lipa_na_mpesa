@@ -100,14 +100,15 @@ async function lipaNaMpesaOnline(token,req){
 
     }catch(err){
         console.log(err)
-        // return {
-        //     success:false,
-        //     message:err['response']['s
-        // };
+        return {
+            success:false,
+            message:err
+        };
 
     };
 };
 
 module.exports= {
-    stkDeposit
+    stkDeposit,
+    getOAuthToken
 }

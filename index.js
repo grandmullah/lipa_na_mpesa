@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const { stkDeposit } = require('./controllers/deposit');
-const {confirmation } = require('./controllers/confirm')
+const {confirmation } = require('./controllers/confirm');
+const { Withdrawal } = require('./controllers/withdraw');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
 require('dotenv').config()
@@ -48,9 +49,49 @@ app.post('/api/deposit', async (req, res) => {
      status:"failed"
    })
 });
+app.post('/api/withdraw', async (req, res) => {
+  console.log(req.body )
+  let resp = await Withdrawal(req.body)
+  console.log(resp)
+   if(resp.success){
+    return res.status(200).json({
+      status:true
+    })
+   }
+   return res.status(400).json({
+     status:false
+   })
+});
 app.post('/api/callback', async (req, res) => {
     console.log(req.body.Body.stkCallback )
     await confirmation(req.body.Body.stkCallback)
+    // console.log(resp)
+  //    if(resp){
+  //     return res.status(200).json({
+  //       status:"true"
+  //     })
+  //    }
+  //    return res.status(400).json({
+  //      status:"failed"
+  //    })
+  });
+
+  app.post('/api/timeout', async (req, res) => {
+    console.log(req.body )
+    
+    // console.log(resp)
+  //    if(resp){
+  //     return res.status(200).json({
+  //       status:"true"
+  //     })
+  //    }
+  //    return res.status(400).json({
+  //      status:"failed"
+  //    })
+  });
+
+  app.post('/api/cb', async (req, res) => {
+    console.log(req.body)
     // console.log(resp)
   //    if(resp){
   //     return res.status(200).json({

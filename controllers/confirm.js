@@ -20,12 +20,13 @@ async function confirmation(data) {
     
 
     if (data.ResultCode === 0 && typeof ge.TxHash === 'undefined'){
+        await cityRef.set({TxHash:`receipt.transactionHash`})
         console.log("here",data.CallbackMetadata.Item[0].Value)
         const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
         let tx = await  usdContract.mint(addr,amount)
         let receipt = await tx.wait()
         console.log(receipt.transactionHash)
-        await cityRef.set({TxHash:`${receipt.transactionHash}`})
+        await cityRef.update({TxHash:`${receipt.transactionHash}`})
 
     }
 
