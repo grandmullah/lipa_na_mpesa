@@ -35,12 +35,13 @@ try{
     // console.log('hapa',security)
     auth = "Bearer " + token ;
     // send the request
+    
     response = await axios.default.post('https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest',{
     "InitiatorName":  `${process.env.InitiatorName}`,
     "SecurityCredential": `${security}`,
     "CommandID": "BusinessPayment",
     "Amount": amount,
-    "PartyA":`${process.env.B2cCode}`,
+    "PartyA":`${process.env.b2cCode}`,
     "PartyB": phoneNumber,
     "Remarks": "remarks",
     "QueueTimeOutURL": `${process.env.b2c_timeout}`,
