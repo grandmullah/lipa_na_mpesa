@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const { stkDeposit } = require('./controllers/deposit');
-const {confirmation } = require('./controllers/confirm');
+const {confirmation,B2c_confirmation } = require('./controllers/confirm');
 const { Withdrawal } = require('./controllers/withdraw');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
@@ -92,6 +92,7 @@ app.post('/api/callback', async (req, res) => {
 
   app.post('/api/cb', async (req, res) => {
     console.log(req.body)
+    await B2c_confirmation(req.body.Result)
     // console.log(resp)
   //    if(resp){
   //     return res.status(200).json({

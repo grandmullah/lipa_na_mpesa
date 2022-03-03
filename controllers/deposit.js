@@ -64,7 +64,7 @@ async function lipaNaMpesaOnline(token,req){
     let partyB = bs_short_code;
     let phoneNumber = req.phoneNumber; //should follow the format:2547xxxxxxxx
     let callBackUrl =process.env.callback_url ;
-    let accountReference = "lipa-na-mpesa";
+    let accountReference = "alex";
     let transaction_desc = "Test new tech";
 
     try {

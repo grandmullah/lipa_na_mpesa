@@ -22,13 +22,13 @@ async function Withdrawal (req) {
     var security =   encryptStringWithRsaPublicKey(process.env.password,privateKey)
 
     console.log(security)
-    let re = await withdraw(auth,security,req.amount,req.phoneNumber)
+    let re = await withdraw(auth,security,req.amount,req.phoneNumber,req.address)
     return re
  
 }
 
 
-async function withdraw(token,security,amount,phoneNumber ) {
+async function withdraw(token,security,amount,phoneNumber,address ) {
 
 
 try{
@@ -57,7 +57,7 @@ try{
     const cityRef = db.collection('withdrawals').doc(response.data.ConversationID);
 
       await cityRef.set(response.data)
-    //   await cityRef.update({address:req.address})
+      await cityRef.update({address:address})
     return {
         success:true,
         message:response.data
