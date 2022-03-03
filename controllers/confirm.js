@@ -47,7 +47,7 @@ async function web3 (addr,amount) {
 
 async function B2c_confirmation(data) {
 
-    const cityRef = db.collection('transactions').doc(data.ConversationID);
+    const cityRef = db.collection('withdrawals').doc(data.ConversationID);
 
     const resp = await cityRef.update(data)
     const ge =(await cityRef.get()).data()
@@ -58,12 +58,12 @@ async function B2c_confirmation(data) {
 
     if (data.ResultCode === 0 && typeof ge.TxHash === 'undefined'){
         await cityRef.update({TxHash:`receipt.transactionHash`})
-        console.log("here",data.CallbackMetadata.Item[0].Value)
-        const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
-        let tx = await  usdContract.mint(addr,amount)
-        let receipt = await tx.wait()
-        console.log(receipt.transactionHash)
-        await cityRef.update({TxHash:`${receipt.transactionHash}`})
+        // console.log("here",data.CallbackMetadata.Item[0].Value)
+        // const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
+        // let tx = await  usdContract.mint(addr,amount)
+        // let receipt = await tx.wait()
+        // console.log(receipt.transactionHash)
+        // await cityRef.update({TxHash:`${receipt.transactionHash}`})
 
     }
 
