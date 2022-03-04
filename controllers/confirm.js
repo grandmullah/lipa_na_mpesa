@@ -50,7 +50,7 @@ async function burn (addr,amount) {
         const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
         const Wallet = new ethers.Wallet(process.env.key,Provider)
         const usdContract  = new ethers.Contract('0xC0972d8A369b27Fe52aD88A98FcBA786884D13e4',abi,Wallet)
-        let tx = await  usdContract.burnFrom(addr,amount)
+        let tx = await  usdContract.burnFrom(addr,amount,{ gasLimit: 100000})
         console.log(tx)
         return await tx.wait()
     } catch (error) {
