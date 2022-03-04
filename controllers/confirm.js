@@ -45,6 +45,20 @@ async function web3 (addr,amount) {
 
 }
 
+async function burn (addr,amount) {
+    try {
+        const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
+        const Wallet = new ethers.Wallet(process.env.key,Provider)
+        const usdContract  = new ethers.Contract('0xC0972d8A369b27Fe52aD88A98FcBA786884D13e4',abi,Wallet)
+        let tx = await  usdContract.burnFrom(addr,amount)
+        console.log(tx)
+        return await tx.wait()
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
 async function B2c_confirmation(data) {
 
     const cityRef = db.collection('withdrawals').doc(data.ConversationID);
@@ -58,12 +72,12 @@ async function B2c_confirmation(data) {
 
     if (data.ResultCode === 0 && typeof ge.TxHash === 'undefined'){
         await cityRef.update({TxHash:`receipt.transactionHash`})
-        // console.log("here",data.CallbackMetadata.Item[0].Value)
-        // const amount =  ethers.utils.parseEther(`${data.CallbackMetadata.Item[0].Value}`)
-        // let tx = await  usdContract.mint(addr,amount)
-        // let receipt = await tx.wait()
-        // console.log(receipt.transactionHash)
-        // await cityRef.update({TxHash:`${receipt.transactionHash}`})
+        console.log("here",data.ResultParameters.ResultParameter[0].Value)
+        const amount =  ethers.utils.parseEther(`${data.ResultParameters.ResultParameter[0].Value}`)
+        let receipt =  await burn(addr,amount)
+       
+        console.log(receipt.transactionHash)
+        await cityRef.update({TxHash:`${receipt.transactionHash}`})
 
     }
 
