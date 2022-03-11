@@ -35,7 +35,7 @@ async function web3 (addr,amount) {
     try {
         const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
         const Wallet = new ethers.Wallet(process.env.key,Provider)
-        const usdContract  = new ethers.Contract('0xCA40a841C19EaadF27BAc0c39Fe9cc5ce0720263',abi,Wallet)
+        const usdContract  = new ethers.Contract('0x8029fAE2dC8C491D7496b1Fb78fB365C4eE90A55',abi,Wallet)
         let tx = await  usdContract.mint(addr,amount,{ gasLimit: 100000})
         console.log(tx)
         return await tx.wait()
@@ -49,7 +49,7 @@ async function burn (addr,amount) {
     try {
         const Provider = new ethers.providers.InfuraProvider.getWebSocketProvider('ropsten')
         const Wallet = new ethers.Wallet(process.env.key,Provider)
-        const usdContract  = new ethers.Contract('0xCA40a841C19EaadF27BAc0c39Fe9cc5ce0720263',abi,Wallet)
+        const usdContract  = new ethers.Contract('0x8029fAE2dC8C491D7496b1Fb78fB365C4eE90A55',abi,Wallet)
         let tx = await  usdContract.burnFrom(addr,amount,{ gasLimit: 100000})
         console.log(tx)
         return await tx.wait()
